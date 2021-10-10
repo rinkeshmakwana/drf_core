@@ -3,7 +3,7 @@ from django.urls import path
 
 from api.views import employee_list, employee_detail, employee_create, employee_api, EmployeeAPI, employee_api_view, \
     EmployeeAPIView, EmployeeListView, EmployeeCreateView, EmployeeRetrieveView, EmployeeUpdateView, EmployeeDeleteView, \
-    EmployeeListCreate, EmployeeRetrieveUpdateDestroy
+    EmployeeListCreateView, EmployeeRetrieveUpdateDestroyView
 
 urlpatterns = [
     path('admin/', admin.site.urls),
@@ -28,7 +28,7 @@ urlpatterns = [
     # path('api/employees/<int:pk>/', EmployeeDeleteView.as_view()),
 
     # put all above 5 api view functionality in 2 views only
-    path('api/employees/', EmployeeListCreate.as_view()),
-    path('api/employees/<int:pk>/', EmployeeRetrieveUpdateDestroy.as_view()),
+    path('api/employees/', EmployeeListCreateView.as_view()),
+    path('api/employees/<int:pk>/', EmployeeRetrieveUpdateDestroyView.as_view()),
 
 ]
