@@ -43,10 +43,10 @@ class EmployeeSerializer(serializers.ModelSerializer):
 
     # name = serializers.CharField(read_only=True)        # to make single field read only when update
 
-    def start_with_r(self, value):
-        if value[0].lower() != 'r':
-            raise serializers.ValidationError("Name should be start with r")
-    name = serializers.CharField(validators=[start_with_r])     # validator as custom method
+    # def start_with_r(self, value):
+    #     if value[0].lower() != 'r':
+    #         raise serializers.ValidationError("Name should be start with r")
+    # name = serializers.CharField(validators=[start_with_r])     # validator as custom method
 
     class Meta:
         model = Employee
@@ -54,15 +54,15 @@ class EmployeeSerializer(serializers.ModelSerializer):
         # read_only_fields = ['name', 'employee_code']        # to make multiple field read only when update
         # extra_kwargs = {'name': {'read_only': True}}        # to make single field read only when update
 
-    # field level validation
-    def validate_employee_code(self, value):
-        if value >= 200:
-            raise serializers.ValidationError("Employees quota over")
-
-    # object level validation
-    def validate(self, data):
-        name = data.get('name')
-        department = data.get('department')
-        if name.lower() == 'rinkesh' and department.lower() != 'developer':
-            raise ValidationError("Department must be developer")
-        return data
+    # # field level validation
+    # def validate_employee_code(self, value):
+    #     if value >= 200:
+    #         raise serializers.ValidationError("Employees quota over")
+    #
+    # # object level validation
+    # def validate(self, data):
+    #     name = data.get('name')
+    #     department = data.get('department')
+    #     if name.lower() == 'rinkesh' and department.lower() != 'developer':
+    #         raise ValidationError("Department must be developer")
+    #     return data
