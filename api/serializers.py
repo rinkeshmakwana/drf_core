@@ -1,9 +1,15 @@
+from django.core.exceptions import ValidationError
 from rest_framework import serializers
 from .models import Employee
 
 
+def start_with_r(value):
+    if value[0].lower() != 'r':
+        raise serializers.ValidationError("Name should be start with r")
+
+
 class EmployeeSerializer(serializers.Serializer):
-    name = serializers.CharField(max_length=100)
+    name = serializers.CharField(max_length=100, validators=[start_with_r])     # validator as custom function
     employee_code = serializers.IntegerField()
     department = serializers.CharField(max_length=50)
 
@@ -16,3 +22,16 @@ class EmployeeSerializer(serializers.Serializer):
         instance.department = validated_data.get('department', instance.department)
         instance.save()
         return instance
+
+    # field level validation
+    def validate_employee_code(self, value):
+        if value >= 200:
+            raise serializers.ValidationError("Employees quota over")
+
+    # object level validation
+    def validate(self, data):
+        name = data.get('name')
+        department = data.get('department')
+        if name.lower() == 'rinkesh' and department.lower() != 'developer':
+            raise ValidationError("Department must be developer")
+        return data
