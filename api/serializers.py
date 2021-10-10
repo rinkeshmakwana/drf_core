@@ -9,3 +9,10 @@ class EmployeeSerializer(serializers.Serializer):
 
     def create(self, validate_data):
         return Employee.objects.create(**validate_data)
+
+    def update(self, instance, validated_data):
+        instance.name = validated_data.get('name', instance.name)
+        instance.employee_code = validated_data.get('employee_code', instance.employee_code)
+        instance.department = validated_data.get('department', instance.department)
+        instance.save()
+        return instance
