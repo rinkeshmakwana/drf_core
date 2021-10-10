@@ -2,7 +2,8 @@ from django.contrib import admin
 from django.urls import path
 
 from api.views import employee_list, employee_detail, employee_create, employee_api, EmployeeAPI, employee_api_view, \
-    EmployeeAPIView, EmployeeListView, EmployeeCreateView, EmployeeRetrieveView, EmployeeUpdateView, EmployeeDeleteView
+    EmployeeAPIView, EmployeeListView, EmployeeCreateView, EmployeeRetrieveView, EmployeeUpdateView, EmployeeDeleteView, \
+    EmployeeListCreate, EmployeeRetrieveUpdateDestroy
 
 urlpatterns = [
     path('admin/', admin.site.urls),
@@ -20,10 +21,14 @@ urlpatterns = [
     # path('api/', EmployeeAPIView.as_view()),    # class based api list, create view
     # path('api/<int:pk>/', EmployeeAPIView.as_view()),   # class based api detail, update, delete view
 
-    path('api/', EmployeeListView.as_view()),
-    path('api/', EmployeeCreateView.as_view()),
-    path('api/<int:pk>/', EmployeeRetrieveView.as_view()),
-    path('api/<int:pk>/', EmployeeUpdateView.as_view()),
-    path('api/<int:pk>/', EmployeeDeleteView.as_view()),
+    # path('api/employees/', EmployeeListView.as_view()),
+    # path('api/employees/', EmployeeCreateView.as_view()),
+    # path('api/employees/<int:pk>/', EmployeeRetrieveView.as_view()),
+    # path('api/employees/<int:pk>/', EmployeeUpdateView.as_view()),
+    # path('api/employees/<int:pk>/', EmployeeDeleteView.as_view()),
+
+    # put all above 5 api view functionality in 2 views only
+    path('api/employees/', EmployeeListCreate.as_view()),
+    path('api/employees/<int:pk>/', EmployeeRetrieveUpdateDestroy.as_view()),
 
 ]

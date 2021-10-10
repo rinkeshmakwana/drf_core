@@ -373,3 +373,28 @@ class EmployeeDeleteView(GenericAPIView, DestroyModelMixin):
 
     def delete(self, request, *args, **kwargs):
         return self.destroy(request, *args, **kwargs)
+
+
+class EmployeeListCreate(GenericAPIView, ListModelMixin, CreateModelMixin):
+    queryset = Employee.objects.all()
+    serializer_class = EmployeeSerializer
+
+    def get(self, request, *args, **kwargs):
+        return self.list(request, *args, **kwargs)
+
+    def post(self, request, *args, **kwargs):
+        return self.create(request, *args, **kwargs)
+
+
+class EmployeeRetrieveUpdateDestroy(GenericAPIView, RetrieveModelMixin, UpdateModelMixin, DestroyModelMixin):
+    queryset = Employee.objects.all()
+    serializer_class = EmployeeSerializer
+
+    def get(self, request, *args, **kwargs):
+        return self.retrieve(request, *args, **kwargs)
+
+    def put(self, request, *args, **kwargs):
+        return self.update(request, *args, **kwargs)
+
+    def delete(self, request, *args, **kwargs):
+        return self.destroy(request, *args, **kwargs)
