@@ -6,13 +6,14 @@ from rest_framework.routers import DefaultRouter
 #     EmployeeAPIView, EmployeeListView, EmployeeCreateView, EmployeeRetrieveView, EmployeeUpdateView, EmployeeDeleteView, \
 #     EmployeeListCreateView, EmployeeRetrieveUpdateDestroyView, \
 
-from api.views import EmployeeViewSet
-
+from api.views import EmployeeViewSet, EmployeeModelViewSet, EmployeeReadOnlyModelViewSet
 
 # creating router object
 router = DefaultRouter()
 
-router.register('api', EmployeeViewSet, basename='employee')
+# router.register('api', EmployeeViewSet, basename='employee')
+# router.register('api', EmployeeModelViewSet, basename='employee')
+router.register('api', EmployeeReadOnlyModelViewSet, basename='employee')
 
 
 urlpatterns = [

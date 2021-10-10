@@ -51,6 +51,7 @@ class EmployeeSerializer(serializers.ModelSerializer):
     class Meta:
         model = Employee
         fields = ['id', 'name', 'employee_code', 'department']
+        # fields = '__all__'
         # read_only_fields = ['name', 'employee_code']        # to make multiple field read only when update
         # extra_kwargs = {'name': {'read_only': True}}        # to make single field read only when update
 

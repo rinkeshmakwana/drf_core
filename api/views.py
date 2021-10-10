@@ -469,3 +469,13 @@ class EmployeeViewSet(viewsets.ViewSet):
         emp = Employee.objects.get(pk=id_)
         emp.delete()
         return Response({"msg": "Data Deleted"})
+
+
+class EmployeeModelViewSet(viewsets.ModelViewSet):
+    queryset = Employee.objects.all()
+    serializer_class = EmployeeSerializer
+
+
+class EmployeeReadOnlyModelViewSet(viewsets.ReadOnlyModelViewSet):
+    queryset = Employee.objects.all()
+    serializer_class = EmployeeSerializer
