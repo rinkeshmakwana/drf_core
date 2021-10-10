@@ -1,7 +1,8 @@
 from django.contrib import admin
 from django.urls import path
 
-from api.views import employee_list, employee_detail, employee_create, employee_api, EmployeeAPI, employee_api_view
+from api.views import employee_list, employee_detail, employee_create, employee_api, EmployeeAPI, employee_api_view, \
+    EmployeeAPIView
 
 urlpatterns = [
     path('admin/', admin.site.urls),
@@ -14,6 +15,8 @@ urlpatterns = [
     # path('api/', employee_api),           # function based
     # path('api/', EmployeeAPI.as_view()),  # class based
 
-    path('api/', employee_api_view),
-    path('api/<int:pk>/', employee_api_view),
+    # path('api/', employee_api_view),            # function based api list, create view
+    # path('api/<int:pk>/', employee_api_view),   # function based api detail, update, delete view
+    path('api/', EmployeeAPIView.as_view()),    # class based api list, create view
+    path('api/<int:pk>/', EmployeeAPIView.as_view()),   # class based api detail, update, delete view
 ]

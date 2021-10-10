@@ -9,6 +9,7 @@ from rest_framework.decorators import api_view
 from rest_framework.parsers import JSONParser
 from rest_framework.renderers import JSONRenderer
 from rest_framework.response import Response
+from rest_framework.views import APIView
 
 from .models import Employee
 from .serializers import EmployeeSerializer
@@ -278,6 +279,53 @@ def employee_api_view(request, pk=None):
         return Response(serializer.errors)
 
     if request.method == "DELETE":
+        id_ = pk
+        emp = Employee.objects.get(pk=id_)
+        emp.delete()
+        return Response({"msg": "Data Deleted"})
+
+
+class EmployeeAPIView(APIView):
+    """
+    drf class based api view with crud operations
+    """
+
+    def get(self, request, pk=None, format=None):
+        id_ = pk
+        if id_ is not None:
+            emp = Employee.objects.get(id=id_)
+            serializer = EmployeeSerializer(emp)
+            return Response(serializer.data)
+        emp = Employee.objects.all()
+        serializer = EmployeeSerializer(emp, many=True)
+        return Response(serializer.data)
+
+    def post(self, request, format=None):
+        serializer = EmployeeSerializer(data=request.data)
+        if serializer.is_valid():
+            serializer.save()
+            return Response({'msg': "Data Created"}, status=status.HTTP_201_CREATED)
+        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
+    def put(self, request, pk, format=None):
+        id_ = pk
+        emp = Employee.objects.get(pk=id_)
+        serializer = EmployeeSerializer(emp, data=request.data)
+        if serializer.is_valid():
+            serializer.save()
+            return Response({'msg': "Complete Data Updated"})
+        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
+    def patch(self, request, pk, format=None):
+        id_ = pk
+        emp = Employee.objects.get(pk=id_)
+        serializer = EmployeeSerializer(emp, data=request.data, partial=True)
+        if serializer.is_valid():
+            serializer.save()
+            return Response({'msg': "Partial Data Updated"})
+        return Response(serializer.errors)
+
+    def delete(self, request, pk, format=None):
         id_ = pk
         emp = Employee.objects.get(pk=id_)
         emp.delete()
