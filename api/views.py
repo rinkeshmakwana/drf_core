@@ -4,7 +4,7 @@ from django.http import HttpResponse, JsonResponse
 from django.utils.decorators import method_decorator
 from django.views import View
 from django.views.decorators.csrf import csrf_exempt
-from rest_framework import status
+from rest_framework import status, viewsets
 from rest_framework.decorators import api_view
 from rest_framework.generics import GenericAPIView, ListAPIView, CreateAPIView, RetrieveAPIView, ListCreateAPIView, \
     RetrieveUpdateDestroyAPIView
@@ -424,3 +424,48 @@ class EmployeeListCreateView(ListCreateAPIView):
 class EmployeeRetrieveUpdateDestroyView(RetrieveUpdateDestroyAPIView):
     queryset = Employee.objects.all()
     serializer_class = EmployeeSerializer
+
+
+class EmployeeViewSet(viewsets.ViewSet):
+    def list(self, request):
+        emp = Employee.objects.all()
+        serializer = EmployeeSerializer(emp, many=True)
+        return Response(serializer.data)
+
+    def retrieve(self, request, pk=None):
+        id_ = pk
+        if id_ is not None:
+            emp = Employee.objects.get(id=id_)
+            serializer = EmployeeSerializer(emp)
+            return Response(serializer.data)
+
+    def create(self, request):
+        serializer = EmployeeSerializer(data=request.data)
+        if serializer.is_valid():
+            serializer.save()
+            return Response({'msg': "Data Created"}, status=status.HTTP_201_CREATED)
+        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
+    def update(self, request, pk):
+        id_ = pk
+        emp = Employee.objects.get(pk=id_)
+        serializer = EmployeeSerializer(emp, data=request.data)
+        if serializer.is_valid():
+            serializer.save()
+            return Response({'msg': "Complete Data Updated!"})
+        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
+    def partial_update(self, request, pk):
+        id_ = pk
+        emp = Employee.objects.get(pk=id_)
+        serializer = EmployeeSerializer(emp, data=request.data, partial=True)
+        if serializer.is_valid():
+            serializer.save()
+            return Response({'msg': "Partial Data Updated!"})
+        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
+    def destroy(self, request, pk):
+        id_ = pk
+        emp = Employee.objects.get(pk=id_)
+        emp.delete()
+        return Response({"msg": "Data Deleted"})
