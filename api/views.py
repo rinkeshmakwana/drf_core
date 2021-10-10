@@ -6,6 +6,9 @@ from django.views import View
 from django.views.decorators.csrf import csrf_exempt
 from rest_framework import status
 from rest_framework.decorators import api_view
+from rest_framework.generics import GenericAPIView
+from rest_framework.mixins import ListModelMixin, CreateModelMixin, RetrieveModelMixin, UpdateModelMixin, \
+    DestroyModelMixin
 from rest_framework.parsers import JSONParser
 from rest_framework.renderers import JSONRenderer
 from rest_framework.response import Response
@@ -330,3 +333,43 @@ class EmployeeAPIView(APIView):
         emp = Employee.objects.get(pk=id_)
         emp.delete()
         return Response({"msg": "Data Deleted"})
+
+
+class EmployeeListView(GenericAPIView, ListModelMixin):
+    queryset = Employee.objects.all()
+    serializer_class = EmployeeSerializer
+
+    def get(self, request, *args, **kwargs):
+        return self.list(request, *args, **kwargs)
+
+
+class EmployeeCreateView(GenericAPIView, CreateModelMixin):
+    queryset = Employee.objects.all()
+    serializer_class = EmployeeSerializer
+
+    def post(self, request, *args, **kwargs):
+        return self.create(request, *args, **kwargs)
+
+
+class EmployeeRetrieveView(GenericAPIView, RetrieveModelMixin):
+    queryset = Employee.objects.all()
+    serializer_class = EmployeeSerializer
+
+    def get(self, request, *args, **kwargs):
+        return self.retrieve(request, *args, **kwargs)
+
+
+class EmployeeUpdateView(GenericAPIView, UpdateModelMixin):
+    queryset = Employee.objects.all()
+    serializer_class = EmployeeSerializer
+
+    def put(self, request, *args, **kwargs):
+        return self.update(request, *args, **kwargs)
+
+
+class EmployeeDeleteView(GenericAPIView, DestroyModelMixin):
+    queryset = Employee.objects.all()
+    serializer_class = EmployeeSerializer
+
+    def delete(self, request, *args, **kwargs):
+        return self.destroy(request, *args, **kwargs)
